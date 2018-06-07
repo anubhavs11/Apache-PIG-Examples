@@ -58,6 +58,6 @@ grunt> stocks_avro = LOAD 'output/pig/avro' USING org.apache.pig.piggybank.stora
 		  'no_schema_check',
           	'schema_file', 
 		  'avro/stocks.avro.schema');
-		  
+		   
 grunt> top10 = LIMIT stocks_avro 10;
 grunt> DUMP top10;		  
