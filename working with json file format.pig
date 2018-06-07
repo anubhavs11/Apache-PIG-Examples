@@ -146,6 +146,46 @@ dump vals;
 (Se7en,artist:32,(Mills))
 */
 
+--DATASET WITH 1 ARTIST HAVING MULTIPLE ROLE(dataset is SAME)
+
+describe data;
+--data: {id: chararray,title: chararray,year: chararray,genre: chararray,summary: chararray,country: chararray,directory: (id: chararray,lastname: chararray,firstname: chararray,yearOfBirth: chararray),actors: {(id: chararray,role: chararray)}}
+
+movies = FOREACH data GENERATE title,actors;
+
+describe movies;
+--movies: {title: chararray,actors: {(id: chararray,role: chararray)}}
+
+--dump movies;
+--(Se7en,{(artist:18,Doe),(artist:18,Mills),(artist:22,Somerset),(artist:32,Mills)})
+
+artist = LOAD 'artist.json' USING JsonLoader('id:chararray,last_name:chararray,first_name:chararray,year_of_birth:chararray');
+
+movies = FOREACH movies GENERATE title,FLATTEN($1);
+describe movies;
+--movies: {title: chararray,actors::id: chararray,actors::role: chararray}
+describe artist;
+--artist: {id: chararray,last_name: chararray,first_name: chararray,year_of_birth: chararray}
+
+joined = JOIN movies BY (actors::id),artist BY (id);
+--dump joined;
+/*
+(Se7en,artist:18,Mills,artist:18,Spacey,Kevin,1959)
+(Se7en,artist:18,Doe,artist:18,Spacey,Kevin,1959)
+*/
+DESCRIBE joined;
+/*joined: {movies::title: chararray,movies::actors::id: chararray,movies::actors::role: chararray,artist::id: chararray,artist::last_name: chararray,artist::first_name: chararray,artist::year_of_birth: chararray}
+*/
+
+result = FOREACH joined GENERATE movies::title,artist::id,artist::last_name,artist::first_name,movies::actors::role,artist::year_of_birth;
+--movies::title,artist::id,artist::last_name,artist::first_name,movies::actors::role,artist::year_of_birth;
+dump result;
+/*
+(Se7en,artist:18,Spacey,Kevin,Mills,1959)
+(Se7en,artist:18,Spacey,Kevin,Doe,1959)
+*/
+
+
 
 
 
