@@ -31,7 +31,6 @@ DUMP B;
 (Hadoop Defnitive Guide,Tom White,US,CLOUDERA,24.90,2012)
 (Programming Pig,Alan Gates,USA,Horton Works,30.90,2013)
 */
-
 -- WORKING WITH NESTED DATA IN XML
 /* SAMPLE INPUT */
 /*
