@@ -77,10 +77,11 @@ grunt> DUMP join_full;
 
 
 ### Multiway Join ###
-
+	-- It will not work
 grunt> join_multi = JOIN stocks by (symbol, date), divs by (symbol, date), cmp by symbol;
 
 --Multiway join is only possible on inner joins and not on outer joins
+	-- It will work
 grunt> join_multi = JOIN stocks by symbol, divs by symbol, cmp by symbol;
 
 grunt> DUMP join_multi;
